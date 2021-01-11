@@ -65,6 +65,13 @@ def login():
                 flash("Your email or password does not match", "error")
     return render_template('login.html', form=form)
 
+@app.route('/logout', methods=('GET'))
+@login_required
+def logout():
+    logout_user()
+    flash("You have been logged out", "success")
+    return redirect(url_for('index'))
+
 @app.route('/')
 def index():
     return 'Hey'
@@ -72,13 +79,13 @@ def index():
 
 if __name__ == '__main__':
     models.initialize()
-    try:
-        models.User.create_user(
-            name='Kevin',
-            email='stradtkt@gmail.com',
-            password='password',
-            admin=True
-        )
-    except ValueError:
-        pass
+    # try:
+    #     models.User.create_user(
+    #         name='Kevin',
+    #         email='stradtkt@gmail.com',
+    #         password='password',
+    #         admin=True
+    #     )
+    # except ValueError:
+    #     pass
     app.run(debug=DEBUG, host=HOST, port=PORT)
